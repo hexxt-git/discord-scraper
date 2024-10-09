@@ -1,0 +1,14 @@
+{
+  "name": "discord-scraper",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js-selfbot-v13": "^3.4.0"
+  }
+}
