@@ -62,7 +62,7 @@ async function listServersAndChannels() {
     for (const channel of channels.values()) {
       if (channel) {
         console.log(
-          `    - #${channel.name} (ID: ${channel.id}, Type: ${channel.type})`
+          `    - #${channel.name} (${guild.name}) (ID: ${channel.id}, Type: ${channel.type})`
         );
       }
     }
@@ -116,7 +116,7 @@ async function fetchAndStoreChannelMessages(channel: TextChannel) {
         : { limit: messagesPerFetch };
 
       const messages = await channel.messages.fetch(options);
-      console.log(`Fetched ${messages.size} messages from #${channel.name}.`);
+      console.log(`Fetched ${messages.size} messages from #${channel.name} (${channel.guild.name}).`);
 
       if (messages.size === 0) {
         break;
@@ -138,19 +138,19 @@ async function fetchAndStoreChannelMessages(channel: TextChannel) {
       await new Promise((resolve) => setTimeout(resolve, delayBetweenFetches));
     } catch (error) {
       consecutiveErrors++;
-      console.error(`Error fetching messages from #${channel.name}:`, error);
+      console.error(`Error fetching messages from #${channel.name} (${channel.guild.name}):`, error);
       if (consecutiveErrors < MAX_RETRIES) {
         const delay = BASE_DELAY * consecutiveErrors * 2;
         console.log(`Retrying in ${delay / 1000} seconds...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
       } else {
-        console.warn(`Skipping #${channel.name} after exceeding max retries.`);
+        console.warn(`Skipping #${channel.name} (${channel.guild.name}) after exceeding max retries.`);
       }
     }
   }
   
   activeChannelFetches--;
-  console.log(`${messagesFetched} messages from #${channel.name} in ${channel.guild.name} fetched and stored. active channel fetches: ${activeChannelFetches}`);
+  console.log(`${messagesFetched} messages from #${channel.name} (${channel.guild.name}) in ${channel.guild.name} fetched and stored. active channel fetches: ${activeChannelFetches}`);
   processNextChannel();
 }
 
